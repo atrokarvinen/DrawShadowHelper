@@ -1,6 +1,5 @@
 ﻿using ImageProcessing;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -22,13 +21,15 @@ namespace ShadowsHelper
             InitializeComponent();
 
             Rectangle resolution = Screen.PrimaryScreen.Bounds;
-            //Rectangle resolution = new Rectangle(0, 0, 1000, 1000);
             ClientSize = new Size(resolution.Width - 100, resolution.Height - 100);
 
             _ImageProcessor = new ImageProcessor();
 
             _OriginalImage = (Bitmap)Image.FromFile(@"Samples\TestOriginal.jpg");
             OriginalPB.Image = _OriginalImage;
+
+            Bitmap shadowImage = (Bitmap)Image.FromFile(@"Samples\Test_Shadows.png");
+            ResultPB.Image = shadowImage;
         }
 
         private void InitializeMainScreen()
@@ -51,12 +52,12 @@ namespace ShadowsHelper
             // OriginalImageLabel
             OriginalImageLabel.Location = Prcnt2PxLoc(2, 1);
             OriginalImageLabel.Size = new Size(97, 13);
-            OriginalImageLabel.Text = "OriginalImageLabel";
+            OriginalImageLabel.Text = "Original image";
 
             // ResultImageLabel
             ResultImageLabel.Location = Prcnt2PxLoc(51, 1);
             ResultImageLabel.Size = new Size(92, 13);
-            ResultImageLabel.Text = "ResultImageLabel";
+            ResultImageLabel.Text = "Shadow image";
 
             // LoadImageButton
             LoadImageButton.Location = Prcnt2PxLoc(2, 85);
@@ -81,7 +82,7 @@ namespace ShadowsHelper
             // ShadowLevelsInput
             ShadowLevelsInput.Location = Prcnt2PxLoc(31, 87);
             ShadowLevelsInput.Size = new Size(100, 20);
-            ShadowLevelsInput.Text = "5";
+            ShadowLevelsInput.Text = "8";
 
             // ProgressBarLabel
             ProgressBarLabel.Location = Prcnt2PxLoc(48, 90);
