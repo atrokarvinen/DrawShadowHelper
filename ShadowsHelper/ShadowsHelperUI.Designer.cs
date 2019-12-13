@@ -37,6 +37,8 @@
             this.ComputeButton = new System.Windows.Forms.Button();
             this.ShadowLevelsInput = new System.Windows.Forms.TextBox();
             this.ShadowLevelsLabel = new System.Windows.Forms.Label();
+            this.ProgressBar = new System.Windows.Forms.ProgressBar();
+            this.ProgressBarLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.OriginalPB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ResultPB)).BeginInit();
             this.SuspendLayout();
@@ -83,6 +85,7 @@
             this.LoadImageButton.TabIndex = 4;
             this.LoadImageButton.Text = "LoadImageButton";
             this.LoadImageButton.UseVisualStyleBackColor = true;
+            this.LoadImageButton.Click += new System.EventHandler(this.LoadImageButton_Click);
             // 
             // SaveImageButton
             // 
@@ -101,6 +104,7 @@
             this.ComputeButton.TabIndex = 5;
             this.ComputeButton.Text = "ComputeButton";
             this.ComputeButton.UseVisualStyleBackColor = true;
+            this.ComputeButton.Click += new System.EventHandler(this.ComputeButton_Click);
             // 
             // ShadowLevelsInput
             // 
@@ -118,11 +122,29 @@
             this.ShadowLevelsLabel.TabIndex = 7;
             this.ShadowLevelsLabel.Text = "Shadow levels";
             // 
+            // ProgressBar
+            // 
+            this.ProgressBar.Location = new System.Drawing.Point(294, 428);
+            this.ProgressBar.Name = "ProgressBar";
+            this.ProgressBar.Size = new System.Drawing.Size(100, 23);
+            this.ProgressBar.TabIndex = 8;
+            // 
+            // ProgressBarLabel
+            // 
+            this.ProgressBarLabel.AutoSize = true;
+            this.ProgressBarLabel.Location = new System.Drawing.Point(305, 412);
+            this.ProgressBarLabel.Name = "ProgressBarLabel";
+            this.ProgressBarLabel.Size = new System.Drawing.Size(90, 13);
+            this.ProgressBarLabel.TabIndex = 9;
+            this.ProgressBarLabel.Text = "ProgressBarLabel";
+            // 
             // ShadowsHelperUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.ProgressBarLabel);
+            this.Controls.Add(this.ProgressBar);
             this.Controls.Add(this.ShadowLevelsLabel);
             this.Controls.Add(this.ShadowLevelsInput);
             this.Controls.Add(this.ComputeButton);
@@ -153,6 +175,8 @@
         private System.Windows.Forms.Button ComputeButton;
         private System.Windows.Forms.TextBox ShadowLevelsInput;
         private System.Windows.Forms.Label ShadowLevelsLabel;
+        private System.Windows.Forms.ProgressBar ProgressBar;
+        private System.Windows.Forms.Label ProgressBarLabel;
     }
 }
 
