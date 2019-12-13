@@ -95,6 +95,7 @@
             this.SaveImageButton.TabIndex = 4;
             this.SaveImageButton.Text = "SaveImageButton";
             this.SaveImageButton.UseVisualStyleBackColor = true;
+            this.SaveImageButton.Click += new System.EventHandler(this.SaveImageButton_Click);
             // 
             // ComputeButton
             // 

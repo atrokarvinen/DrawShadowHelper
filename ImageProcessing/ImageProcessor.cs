@@ -1,7 +1,10 @@
-﻿using AForge.Imaging;
+﻿using AForge;
+using AForge.Imaging;
 using AForge.Imaging.Filters;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading.Tasks;
 
 //TODO
@@ -49,6 +52,10 @@ namespace ImageProcessing
             Subtract s = new Subtract(tMaxImage);
             Bitmap tImage = s.Apply(tMinImage);
 
+            //tMinImage.Save(@"C:\Users\karviatr\Pictures\tMin.bmp", ImageFormat.Bmp);
+            //tMaxImage.Save(@"C:\Users\karviatr\Pictures\tMax.bmp", ImageFormat.Bmp);
+            //tImage.Save(@"C:\Users\karviatr\Pictures\tImage.bmp", ImageFormat.Bmp);
+
             return tImage;
         }
 
@@ -58,7 +65,7 @@ namespace ImageProcessing
             {
                 FilterBlobs = true,
                 MinWidth = 1,
-                MinHeight = 1,
+                MinHeight= 1,
             };
             bc.ProcessImage(image);
             return bc.GetObjectsInformation();
@@ -95,13 +102,15 @@ namespace ImageProcessing
             int progressCount = 10;
             int phaseProgressMax = 80;
             int progressStepIncrement = (int)Math.Floor(1.0 / args.ShadowLevels * phaseProgressMax);
-            Bitmap result = new Bitmap(image.Width, image.Height);
+            Bitmap result = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
             for (int i = 0; i < args.ShadowLevels; i++)
             {
                 int thresholdMin = i * 255 / args.ShadowLevels;
                 int thresholdMax = Math.Min((i + 1) * 255 / args.ShadowLevels, 255);
                 Bitmap tImage = await Task.Run(() => Threshold(grayImage, thresholdMin, thresholdMax));
-                Color c = Color.FromArgb(255 - thresholdMin, 0, 0, 0);
+
+                int grayVal = 255 - thresholdMin;
+                Color c = Color.FromArgb(grayVal, 0, 0, 0);
 
                 Blob[] blobs = GetBlobs(tImage);
                 for (int j = 0; j < blobs.Length; j++)

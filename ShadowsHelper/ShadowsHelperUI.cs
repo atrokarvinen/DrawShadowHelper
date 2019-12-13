@@ -1,6 +1,10 @@
 ﻿using ImageProcessing;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -111,14 +115,28 @@ namespace ShadowsHelper
         {
             Progress<ProgressResult> progressIndicator = new Progress<ProgressResult>(ReportProgress);
 
+            int shadowLevels;
+            if (!int.TryParse(ShadowLevelsInput.Text, out shadowLevels))
+            {
+                MessageBox.Show($"Cannot convert '{ShadowLevelsInput.Text}' to Int32");
+                return;
+            }
+            if (!(0 < shadowLevels && shadowLevels < 256))
+            {
+                MessageBox.Show($"Shadow level range is [1, 255]");
+                return;
+            }
+
             ProcessingArgs args = new ProcessingArgs()
             {
                 Image = _OriginalImage,
-                ShadowLevels = int.Parse(ShadowLevelsInput.Text),
+                ShadowLevels = shadowLevels,
             };
             Task<Result> processingTask = _ImageProcessor.ProcessAsync(args, progressIndicator);
 
+
             Result processingResult = await processingTask;
+
             PictureBoxSetImage(OriginalPB, processingResult.GrayImage);
             PictureBoxSetImage(ResultPB, processingResult.ResultImage);
         }
@@ -154,6 +172,41 @@ namespace ShadowsHelper
                     _OriginalImage = (Bitmap)Image.FromFile(filePath);
                     PictureBoxSetImage(OriginalPB, _OriginalImage);
                 }
+            }
+        }
+
+        private void SaveImageButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Png Image|*.png";
+            saveFileDialog.Title = "Save an Image File";
+            saveFileDialog.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog.FileName != "")
+            {
+                // Saves the Image via a FileStream created by the OpenFile method.
+                System.IO.FileStream fs = (System.IO.FileStream)saveFileDialog.OpenFile();
+
+                // Saves the Image in the appropriate ImageFormat based upon the
+                // File type selected in the dialog box.
+                // NOTE that the FilterIndex property is one-based.
+
+                //ResultPB.Image.Save(@"C:\Users\karviatr\Pictures\test.bmp", ImageFormat.Bmp);
+                //ResultPB.Image.Save(@"C:\Users\karviatr\Pictures\test.jpg", ImageFormat.Jpeg);
+                //ResultPB.Image.Save(@"C:\Users\karviatr\Pictures\test.png", ImageFormat.Png);
+
+                string fullFileName = saveFileDialog.FileName;
+                string imageDirName = Path.GetDirectoryName(fullFileName);
+                string imageFileName = Path.GetFileName(fullFileName);
+                string imageName = imageFileName.Split('.').First();
+                string grayFileName = Path.Combine(imageDirName, imageName + "_Gray.png");
+                string resultFileName = Path.Combine(imageDirName, imageName + "_Shadows.png");
+
+                OriginalPB.Image.Save(grayFileName, ImageFormat.Png);
+                ResultPB.Image.Save(resultFileName, ImageFormat.Png);
+
+                fs.Close();
             }
         }
     }
